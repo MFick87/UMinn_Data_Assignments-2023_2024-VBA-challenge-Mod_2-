@@ -1,0 +1,40 @@
+Sub Stocks()
+
+For Each ws In Worksheets
+    
+    Dim Ticker As String
+    Dim YrlyChg As Double
+    Dim OpPrc As Double
+    Dim ClsPrc As Double
+    Dim PrctChg As Double
+    Dim TtlStck As Variant
+    Dim SumRow As Integer
+    
+    lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+    
+    Ticker = ws.Cells(2, 1).Value
+    SumRow = 2
+    OpPrc = ws.Cells(2, 3).Value
+    
+    For i = 2 To lastrow
+        If ws.Cells(i, 1).Value <> Ticker Then
+        ws.Cells(SumRow, 9).Value = Ticker
+        ws.Cells(SumRow, 12).Value = TtlStck
+        TtlStck = 0
+        ClsPrc = ws.Cells(i - 1, 6).Value
+        YrlyChg = ClsPrc - OpPrc
+        ws.Cells(SumRow - 1, 11).Value = PrctChg
+        PrctChg = YrlyChg / OpPrc
+        ws.Cells(SumRow, 10).Value = YrlyChg
+        SumRow = SumRow + 1
+        Ticker = ws.Cells(i, 1).Value
+        OpPrc = ws.Cells(i, 3).Value
+        
+        End If
+        
+        TtlStck = TtlStck + ws.Cells(i, 7).Value
+    
+        
+    Next i
+
+Next ws
